@@ -68,7 +68,9 @@ int ArcTan2(int dx, int dy)
 
 u64 Math_FakeDistance(s32 x1, s32 y1, s32 x2, s32 y2)
 {
-	return (x2-x1)*(x2-x1)+(y2-y1)*(y2-y1);
+   s64 h = x1 - x2;
+   s64 v = y1 - y2;
+   return(h*h + v*v);
 }
 
 u16 Math_AdjustAngle(u16 angle, s16 anglerot, s32 startx, s32 starty, s32 targetx, s32 targety) {
@@ -99,5 +101,26 @@ u64 distances[3];
       else if (distances[2] < distances[1])  angle += anglerot;
            
       return (angle&511);    
+}
+
+u16 getAngle(s32 startx, s32 starty, s32 targetx, s32 targety) {
+	u16 angle = 0;
+	u16 anglerot = 180;
+
+
+	while(anglerot > 5) {
+		angle = Math_AdjustAngle(angle, anglerot, startx, starty, targetx, targety);
+		anglerot = (anglerot - ((3 * anglerot) >> 3)); // On diminue petit ? petit la rotation...
+	}
+
+	// Ajustement encore plus pr?cis...
+	anglerot = 4;
+	angle = Math_AdjustAngle(angle, anglerot, startx, starty, targetx, targety);
+	anglerot = 2;
+	angle = Math_AdjustAngle(angle, anglerot, startx, starty, targetx, targety);
+	anglerot = 1;
+	angle = Math_AdjustAngle(angle, anglerot, startx, starty, targetx, targety);
+
+	return angle;
 }
 

@@ -14,7 +14,7 @@ u32 getFileSize(FILE *file) {
 bool initFilesystem(int argc, char **argv)
 {
 	#ifndef FATONLY
-		if(nitroFSInit(&basePath))
+		if(nitroFSInit(argv[0]))
 		{
 			printf("init : done");
 			chdir("nitro:/");
