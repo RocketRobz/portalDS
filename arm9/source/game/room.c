@@ -469,6 +469,7 @@ void readMapInfo(char* filename)
 			switch(filename[0])
 			{
 				case 'f':
+				case 's':
 					sprintf(str,"%s/%s/maps/%s",basePath,ROOT,r);
 					break;
 				default:

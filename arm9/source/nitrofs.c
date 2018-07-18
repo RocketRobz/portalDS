@@ -51,7 +51,7 @@
 #include <errno.h>
 #include "nds.h"
 #include <fat.h>
-#include "common/nitrofs.h"
+#include "common/general.h"
 
 //This seems to be a typo! memory.h has REG_EXEMEMCNT
 #ifndef REG_EXMEMCNT
@@ -128,8 +128,10 @@ nitroFSInit(const char *ndsfile) {
 	chdirpathid=NITROROOT;
 	ndsFileLastpos=0;
 	ndsFile=NULL;
-	if(ndsfile!=NULL && fatInitDefault()) {
-		if((ndsFile=fopen(ndsfile,"rb"))) {
+	if(ndsfile!=NULL) {
+		if(fatInitDefault() && (ndsFile=fopen(ndsfile,"rb"))) {
+			basePath=malloc(255);
+			getcwd(basePath,255);
 			nitroSubRead(&pos,romstr,strlen(LOADERSTR));
 			if(strncmp(romstr,LOADERSTR,strlen(LOADERSTR))==0) {	
 				nitroSubSeek(&pos,LOADEROFFSET+FNTOFFSET,SEEK_SET);
